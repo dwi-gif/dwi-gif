@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Website Unggah Aplikasi dengan Nama</title>
+    <style>
+        body { margin: 0; padding: 20px; font-family: Arial, sans-serif; background-image: url("background.jpg"); background-size: cover; }
+        h1 { text-align: center; color: #fff; }
+        .app-container { display: inline-block; width: 200px; margin-right: 20px; margin-bottom: 20px; }
+        .app-icon { width: 100px; height: 100px; margin-bottom: 10px; background-image: url("default-icon.png"); background-size: cover; border-radius: 50%; }
+        .app-details { text-align: center; }
+        .app-title { font-size: 16px; font-weight: bold; }
+        .app-download { margin-top: 10px; }
+        #upload-form { max-width: 400px; margin: 0 auto; background-color: rgba(255, 255, 255, 0.8); padding: 20px; border-radius: 10px; }
+        #upload-form input[type="file"] { margin-bottom: 10px; }
+        #download-container { text-align: center; margin-top: 20px; }
+        #download-link { display: none; }
+    </style>
+</head>
+<body>
+    <h1>Unggah Aplikasi dengan Nama</h1>
+    <div id="upload-form">
+        <form action="#" method="post" enctype="multipart/form-data" onsubmit="return false;">
+            <input type="file" name="file" id="file-input">
+            <input type="text" name="app-name" id="app-name-input" placeholder="Nama Aplikasi">
+            <button type="button" onclick="uploadFile()">Unggah</button>
+        </form>
+    </div>
+    <div id="download-container">
+        <h2>Aplikasi yang Diunggah</h2>
+        <div id="app-list"></div>
+    </div>
+    <script>
+        function uploadFile() {
+            var fileInput = document.getElementById("file-input");
+            var appNameInput = document.getElementById("app-name-input");
+            var downloadLink = document.getElementById("download-link");
+            var appList = document.getElementById("app-list");
+
+            var file = fileInput.files[0];
+            var appName = appNameInput.value;
+
+            if (file && appName) {
+                var appContainer = document.createElement("div");
+                appContainer.classList.add("app-container");
+
+                var appIcon = document.createElement("div");
+                appIcon.classList.add("app-icon");
+                appIcon.style.backgroundImage = "url(default-icon.png)";
+
+                var appDetails = document.createElement("div");
+                appDetails.classList.add("app-details");
+
+                var appTitle = document.createElement("div");
+                appTitle.classList.add("app-title");
+                appTitle.textContent = appName;
+
+                var appDownload = document.createElement("a");
+                appDownload.classList.add("app-download");
+                appDownload.href = URL.createObjectURL(file);
+                appDownload.download = appName + getFileExtension(file.name);
+                appDownload.textContent = "Unduh Aplikasi";
+
+                appDetails.appendChild(appTitle);
+                appDetails.appendChild(appDownload);
+
+                appContainer.appendChild(appIcon);
+                appContainer.appendChild(appDetails);
+
+                appList.appendChild(appContainer);
+
+                downloadLink.style.display = "block";
+                appNameInput.value = "";
+                fileInput.value = null;
+            }
+        }
+
+        function getFileExtension(filename) {
+            var extension = filename.slice((filename.lastIndexOf(".") - 1 >>> 0) + 2);
+            return extension ? "." + extension : "";
+        }
+    </script>
+</body>
+</html>
